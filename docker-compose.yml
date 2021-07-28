@@ -1,0 +1,20 @@
+# Kubernetes - first spinning up docker desktop
+version: "3"
+services: 
+    web:
+        image: btholt/node-app
+        ports:
+            - "3000:3000"
+        volumes: 
+            - .:/home/node/code
+            - /home/node/code/node_modules
+        links:
+            - db 
+        labels: 
+            kompose.service.type: loadBalancer # Need this label for Kubernetes
+        environment: 
+            MONGO_CONNECTION_STRING: mongodb://db:27017   
+    db:
+        image: mongo:3
+        ports: 
+            - "27017" # Explicitly expose the port.
